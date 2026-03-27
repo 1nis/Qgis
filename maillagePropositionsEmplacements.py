@@ -36,35 +36,42 @@ if __name__ == "__main__":
 
     # Nous allons enregistrer les coefficients dans un shapefile de "coeficient"
     # TODO : compléter la ligne suivante
-    shapefileCoefficientsMrs = shapefile.Writer("", shapefile.POLYGON)
+    shapefileCoefficientsMrs = shapefile.Writer("Coeff_Answer", shapefile.POLYGON)
     # TODO : créer un champ "Id" de type texte
+    shapefileCoefficientsMrs.field("Id","C")
     # TODO : créer un champ "coefficient" de type numérique, avec au moins 6 décimales
+    shapefileCoefficientsMrs.field("coefficient","N", decimal=6)
 
     shapefileHexaCalanques = shapefile.Reader("maillageCalanques_50M_hexa_complet", shapefile.POLYGON)
     for hexagone in shapefileHexaCalanques.iterShapeRecords():
 
         # On récupère le centroide de la maille
         maille = hexagone.shape
-        centreX = # TODO : completer
-        centreY = # TODO : completer
+        centreX = (carreau.bbox[0] + carreau.bbox[2])/2.0 # TODO : completer
+        centreY = (carreau.bbox[1] + carreau.bbox[3])/2.0 # TODO : completer
 
         coefficient = 0.0 
 
         # README : on donne la boucle for suivante
         # elle peut être utilisée, completée, etc.
+        tabDistCapteur = []
+        distMoyenneCapteur = 3.0 
         for capteurId, capteurPos in propositionsEmplacements.items():
             distCapteur = distance(centreY, centreX, (capteurPos[1]), capteurPos[0])
+            tabDistCapteur.append(distCapteur)
+        distMoyenneCapteur = sum(tabDistCapteur)/len(tabDistCapteur)
+
 
         # README : on accède aux attributs de la maille via l'objet record
         # les attributs disponibles sont l'altitude, le dénivelé, l'id de la maille, la position, etc.
         listeDesAttributsDeLaMaille = hexagone.record
         
-        coefficient = # TODO : completer
+        coefficient =  listeDesAttributsDeLaMaille.record(["altitude"]) + 
 
         
         # On ajoute une nouvelle shape
-        shapefileCoefficientsMrs.shape(maille)
+        shapefileCoefficientsMrs.shape(maille.shape)
         # TODO : ajouter un nouvel enregistrement avec un id de carreau et un coefficient
-        shapefileCoefficientsMrs.
+        shapefileCoefficientsMrs.record(["idcar_200m"],coefficient)
         
     # TODO : fermer le shapefile à la fin de la boucle for
