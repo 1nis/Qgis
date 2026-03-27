@@ -30,7 +30,7 @@ if __name__ == "__main__":
                 header = False
                 continue
             # TODO : modifier la ligne suivante
-            propositionsEmplacements[numCapteur] = [float(line[]), float(line[])]
+            propositionsEmplacements[numCapteur] = [float(line[1]), float(line[2])]
             numCapteur += 1
 
 
@@ -47,8 +47,8 @@ if __name__ == "__main__":
 
         # On récupère le centroide de la maille
         maille = hexagone.shape
-        centreX = (carreau.bbox[0] + carreau.bbox[2])/2.0 # TODO : completer
-        centreY = (carreau.bbox[1] + carreau.bbox[3])/2.0 # TODO : completer
+        centreX = (maille.bbox[0] + maille.bbox[2])/2.0 # TODO : completer
+        centreY = (maille.bbox[1] + maille.bbox[3])/2.0 # TODO : completer
 
         coefficient = 0.0 
 
@@ -66,12 +66,12 @@ if __name__ == "__main__":
         # les attributs disponibles sont l'altitude, le dénivelé, l'id de la maille, la position, etc.
         listeDesAttributsDeLaMaille = hexagone.record
         
-        coefficient =  listeDesAttributsDeLaMaille.record(["altitude"]) + 
-
+        coefficient =  (listeDesAttributsDeLaMaille["altitude"] + listeDesAttributsDeLaMaille["deniv"]) / distMoyenneCapteur
         
         # On ajoute une nouvelle shape
-        shapefileCoefficientsMrs.shape(maille.shape)
+        shapefileCoefficientsMrs.shape(hexagone.shape)
         # TODO : ajouter un nouvel enregistrement avec un id de carreau et un coefficient
         shapefileCoefficientsMrs.record(["idcar_200m"],coefficient)
         
     # TODO : fermer le shapefile à la fin de la boucle for
+    shapefileCoefficientsMrs.close()
