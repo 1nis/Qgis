@@ -58,8 +58,10 @@ if __name__ == "__main__":
         distMoyenneCapteur = 3.0 
         for capteurId, capteurPos in propositionsEmplacements.items():
             distCapteur = distance(centreY, centreX, (capteurPos[1]), capteurPos[0])
-            tabDistCapteur.append(distCapteur)
-        distMoyenneCapteur = sum(tabDistCapteur)/len(tabDistCapteur)
+            if (distCapteur <= distMoyenneCapteur):
+                    tabDistCapteur.append(distCapteur)
+        if len(tabDistCapteur) > 0:
+                distMoyenneCapteur = sum(tabDistCapteur)/len(tabDistCapteur)
 
 
         # README : on accède aux attributs de la maille via l'objet record
@@ -71,7 +73,7 @@ if __name__ == "__main__":
         # On ajoute une nouvelle shape
         shapefileCoefficientsMrs.shape(hexagone.shape)
         # TODO : ajouter un nouvel enregistrement avec un id de carreau et un coefficient
-        shapefileCoefficientsMrs.record(["idcar_200m"],coefficient)
+        shapefileCoefficientsMrs.record(listeDesAttributsDeLaMaille["idhexa_50m"],coefficient)
         
     # TODO : fermer le shapefile à la fin de la boucle for
     shapefileCoefficientsMrs.close()
